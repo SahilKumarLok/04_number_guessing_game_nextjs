@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect, ChangeEvent } from "react";
 
 // Number Guessing Game Component
@@ -47,7 +47,7 @@ export default function NumberGuessingGame() {
     if (gameStarted && !paused) {
       generateRandomNumber();
     }
-  }, [gameStarted, paused]);
+  }, [gameStarted, paused, generateRandomNumber]);
 
   // Function to handle the start of the game
   const handleStartGame = (): void => {
@@ -191,7 +191,7 @@ export default function NumberGuessingGame() {
                 attempts.
               </p>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify -center">
               <Button
                 onClick={handleTryAgain}
                 className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
@@ -217,8 +217,14 @@ export default function NumberGuessingGame() {
   );
 }
 
-// Button Component (placeholder for UI framework button)
-function Button({ onClick, children, className }: any) {
+// Button Component
+interface ButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
+  className: string;
+}
+
+function Button({ onClick, children, className }: ButtonProps) {
   return (
     <button onClick={onClick} className={className}>
       {children}
@@ -226,8 +232,16 @@ function Button({ onClick, children, className }: any) {
   );
 }
 
-// Input Component (placeholder for UI framework input)
-function Input({ type, value, onChange, className, placeholder }: any) {
+// Input Component
+interface InputProps {
+  type: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className: string;
+  placeholder: string;
+}
+
+function Input({ type, value, onChange, className, placeholder }: InputProps) {
   return (
     <input
       type={type}
