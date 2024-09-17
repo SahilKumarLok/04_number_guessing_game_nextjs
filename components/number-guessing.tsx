@@ -18,6 +18,19 @@ export default function NumberGuessingGame() {
   const [losses, setLosses] = useState<number>(0);
   const [bestScore, setBestScore] = useState<number | null>(null);
 
+  // Function to generate a random number based on the difficulty range
+  const generateRandomNumber = () => {
+    const randomNumber: number = Math.floor(Math.random() * range) + 1;
+    setTargetNumber(randomNumber);
+  };
+
+  // Effect to start the game by generating a target number
+  useEffect(() => {
+    if (gameStarted && !paused) {
+      generateRandomNumber();
+    }
+  }, [gameStarted, paused]);
+
   // Handle difficulty change and adjust game parameters accordingly
   const handleDifficultyChange = (level: string) => {
     setDifficulty(level);
@@ -35,19 +48,6 @@ export default function NumberGuessingGame() {
         setMaxAttempts(5);
     }
   };
-
-  // Function to generate a random number based on the difficulty range
-  const generateRandomNumber = () => {
-    const randomNumber: number = Math.floor(Math.random() * range) + 1;
-    setTargetNumber(randomNumber);
-  };
-
-  // Effect to start the game by generating a target number
-  useEffect(() => {
-    if (gameStarted && !paused) {
-      generateRandomNumber();
-    }
-  }, [gameStarted, paused, generateRandomNumber]);
 
   // Function to handle the start of the game
   const handleStartGame = (): void => {
@@ -100,9 +100,10 @@ export default function NumberGuessingGame() {
 
   // Function to handle input changes for user guesses
   const handleUserGuessChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value)) {
-      setUserGuess(value);
+    const value: string = e.target.value;
+    const numericValue: number = parseInt(value);
+    if (!isNaN(numericValue)) {
+      setUserGuess(numericValue);
     } else {
       setUserGuess("");
     }
@@ -189,9 +190,9 @@ export default function NumberGuessingGame() {
               <p>
                 The correct number was {targetNumber}. You guessed it in {attempts}{" "}
                 attempts.
-              </p>
+              </p >
             </div>
-            <div className="flex justify -center">
+            <div className="flex justify-center">
               <Button
                 onClick={handleTryAgain}
                 className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
@@ -252,6 +253,5 @@ function Input({ type, value, onChange, className, placeholder }: InputProps) {
     />
   );
 }
-
 
 
